@@ -1,0 +1,66 @@
+import { useState, useEffect } from "react";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faLinkedin,
+  faGithub,
+  faTwitter,
+  faUpwork,
+} from "@fortawesome/free-brands-svg-icons";
+
+const Footer = () => {
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+
+  useEffect(() => {
+    const interval = setInterval(
+      () => setCurrentYear(new Date().getFullYear()),
+      1000
+    );
+    return () => clearInterval(interval);
+  }, []);
+
+  const LinkedinAccountLink =
+    "https://www.linkedin.com/in/sana-ahsam-738831262/"; //your Linkedin Account Link
+  const GithubLink = "https://github.com/sanaahsam"; //your Github Account Link
+  const TwitterLink = "https://twitter.com/sanaahsam"; //your Twitter Account Link
+  const Upwork = "https://www.upwork.com/freelancers/~0171d8a6fc177259b2";
+
+  return (
+    <footer>
+      <div className="footer-container">
+        <div className="foot-head">
+          <h1>Social</h1>
+          <div className="footer-sidebar">
+            <div className="foot-iconn">
+              <a href={LinkedinAccountLink} target="_blank" rel="noreferrer">
+                <FontAwesomeIcon icon={faLinkedin} size="2xl" />
+              </a>
+            </div>
+            <div className="foot-iconn">
+              <a href={GithubLink} target="_blank" rel="noreferrer">
+                <FontAwesomeIcon icon={faGithub} size="2xl" />
+              </a>
+            </div>
+            <div className="foot-iconn">
+              <a href={TwitterLink} target="_blank" rel="noreferrer">
+                <FontAwesomeIcon icon={faTwitter} size="2xl" />
+              </a>
+            </div>
+            <div className="foot-iconn">
+              <a href={Upwork} target="_blank" rel="noreferrer">
+                <FontAwesomeIcon icon={faUpwork} size="2xl" />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="copyright">
+          Copyright &copy;{currentYear}.Made by{" "}
+          <a href="www.sanatech.com">Sana Ahsam</a>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

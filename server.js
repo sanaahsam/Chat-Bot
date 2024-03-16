@@ -1,33 +1,32 @@
-import { config } from "dotenv";
-import OpenAI from "openai";
 import express from "express";
+import ApiRouter from "./Backend/Routes/apiCall.js";
+import Userrouter from "./Backend/Routes/UserRoutes.js";
 import cors from "cors";
-const app = express();
-app.use(cors());
-app.use(express.json());
+import cookieParser from "cookie-parser";
+import mongoose from "mongoose";
+import { config } from "dotenv";
+
 config();
-const openai = new OpenAI({ key: process.env.OPENAI_API_KEY });
+const app = express();
 
-app.post("/api", async (req, res) => {
-  const { message } = req.body;
-  const greeting = "Hey there! 🌟 ";
+app.use(cors());
+app.use(cookieParser());
 
-  const userMessage = { role: "user", content: message };
+app.use(express.json());
 
-  const completion = await openai.chat.completions.create({
-    messages: [
-      {
-        role: "system",
-        content: "You are a friendly assistant here to chat with you!",
-      },
-      userMessage,
-    ],
-    model: "gpt-3.5-turbo",
-  });
+app.use(ApiRouter);
+app.use(Userrouter);
 
-  res.status(200).json({ reply: completion.choices[0].message.content });
-});
+async function ConnectMongoDb() {
+  try {
+    await mongoose.connect(process.env.MONGO_URL);
+    console.log("connected to mongodb");
+  } catch (err) {
+    console.log(err);
+  }
+}
 
-app.listen(4000, () => {
-  console.log("port listening");
+app.listen(process.env.PORT, () => {
+  ConnectMongoDb();
+  console.log(`${process.env.PORT}port listening`);
 });
